@@ -74,11 +74,11 @@ def main() -> None:
     logger.info("Starting GitHub Actions Python job")
 
     # Read config from environment variables
-    input_file = os.geten("INPUT_FILE", "data.json")
+    input_file = os.getenv("INPUT_FILE", "data.json")
     output_file = os.getenv("OUTPUT_FILE", "report.json")
 
     try:
-        data = load_data(input_file)
+        data = load_dat(input_file)
         report = process_data(data)
         save_report(report, output_file)
 
