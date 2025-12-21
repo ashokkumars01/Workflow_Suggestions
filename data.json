@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Service A", "active": true },
+  { "id": 2, "name": "Service B", "active": false },
+  { "id": 3, "name": "Service C", "active": true }
+]
