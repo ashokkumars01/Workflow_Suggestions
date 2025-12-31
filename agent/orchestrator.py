@@ -202,7 +202,7 @@ def main():
         })
 
     safe = sanitize(findings)
-    suggestions = generate_suggestions(safe)
+    suggestions = optimize(safe)
 
     print("DEBUG: Suggestions prepared:\n", suggestions)
     post_comment(suggestions)
