@@ -2,12 +2,12 @@ name: Secure Agentic Code Optimizer
 
 on:
   pull_request:
-    types: [opened, synchronize]
-  push:
-    branches: [master]
+    types: [opened, synchronize, reopened]
+  # push:
+  #   branches: [code-optimizer]
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -32,4 +32,8 @@ jobs:
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: python agent/orchestrator.py
+      run: python -m agent.orchestrator
+
+
+
+
