@@ -139,55 +139,41 @@ from agent.report import post_comment
 
 #=============================================================================================
 
-def generate_suggestions(findings):
-    """
-    Convert findings into human-readable, actionable optimization suggestions.
-    """
-    suggestions = []
-    for f in findings:
-        for issue in f["issues"]:
-            if issue["type"] == "redundant_code":
-                duplicates = [d["file"] + f":{d['line']}" for d in issue["occurrences"]]
-                suggestions.append(
-                    f"⚠️ Duplicated function detected at {', '.join(duplicates)}. "
-                    "Consider refactoring into a single reusable function."
-                )
-            elif issue["type"] == "large_function":
-                suggestions.append(
-                    f"⚠️ Function `{issue['function_name']}` in {f['file']} "
-                    f"is {issue['lines']} lines long. Consider splitting it into smaller functions."
-                )
-            elif issue["type"] == "deep_nested_loop":
-                suggestions.append(
-                    f"⚠️ Deeply nested loop at line {issue['line']} (depth={issue['depth']}, "
-                    f"estimated complexity: {issue['estimated_complexity']}). Consider simplifying the loop."
-                )
-            elif issue["type"] == "test_issue":
-                # Optional: only for debugging
-                suggestions.append(issue["description"])
-    return "\n".join(suggestions)
-
-
 def main():
     findings = []
     fingerprints = {}
-    files = ["test.py"]
-    # for file in scan_repo():
+
+    # -------------------------
+    # Scan Python files
+    # -------------------------
+    files = ["test.py"]  # For testing single file
+    # Uncomment below to scan whole repo
+    # files = list(scan_repo())
+
     for file in files:
         print("DEBUG: Scanning file:", file)
         with open(file, encoding="utf-8") as f:
             src = f.read()
 
+        # -------------------------
+        # Static analysis
+        # -------------------------
         issues = analyze_file(file)
         print(f"DEBUG: Issues found in {file}: {issues}")
 
+        # -------------------------
         # Redundancy detection
+        # -------------------------
         for fn in extract_functions(src, file):
             fingerprints.setdefault(fn["fingerprint"], []).append(fn)
 
+        # Add file-level issues if any
         if issues:
             findings.append({"file": file, "issues": issues})
 
+    # -------------------------
+    # Add duplicate function issues
+    # -------------------------
     for dup in fingerprints.values():
         if len(dup) > 1:
             findings.append({
@@ -195,6 +181,9 @@ def main():
                 "issues": [{"type": "redundant_code", "occurrences": dup}]
             })
 
+    # -------------------------
+    # Inject test finding if nothing detected
+    # -------------------------
     if not findings:
         print("DEBUG: No findings detected, injecting test finding...")
         findings.append({
@@ -202,9 +191,15 @@ def main():
             "issues": [{"type": "test_issue", "description": "This is a test PR comment"}]
         })
 
-    safe = sanitize(findings)
-    suggestions = optimize(safe)
+    # -------------------------
+    # Sanitize and send to Gemini
+    # -------------------------
+    safe_metadata = sanitize(findings)
+    suggestions = optimize(safe_metadata)
 
+    # -------------------------
+    # Debug output and post comment
+    # -------------------------
     print("DEBUG: Suggestions prepared:\n", suggestions)
     post_comment(suggestions)
 
