@@ -7,7 +7,7 @@ def optimize(metadata):
     """
 
     client = genai.Client(
-        api_key=os.environ["AIzaSyAzRrx82-E88UiamJDY_DRTtWdbUt-Cz1o"]
+        api_key=os.environ["GEMINI_API_KEY"]
     )
 
     prompt = f"""
