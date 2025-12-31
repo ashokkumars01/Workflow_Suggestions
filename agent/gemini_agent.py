@@ -1,17 +1,52 @@
-# agent/gemini_agent.py
 import os
 from google import genai
+
+# def optimize(metadata):
+#     """
+#     Sends sanitized metadata ONLY (no source code)
+#     """
+
+#     client = genai.Client(
+#         api_key=os.environ["GEMINI_API_KEY"]
+#     )
+
+#     prompt = f"""
+# You are a senior software optimization expert.
+
+# You are given ONLY anonymized static-analysis metadata.
+# You DO NOT see source code.
+
+# Your job:
+# - Detect redundant logic patterns
+# - Identify performance bottlenecks
+# - Suggest safe refactoring ideas
+# - Never infer business logic
+
+# Metadata:
+# {metadata}
+
+# Respond in MARKDOWN.
+# """
+
+#     response = client.models.generate_content(
+#         model="gemini-2.5-flash",
+#         contents=prompt,
+#         config={
+#             "temperature": 0.2,
+#             "max_output_tokens": 1000000
+#         }
+#     )
+
+#     return response.text
+
+
+
+#=============================================================================================
+# agent/gemini_agent.py
+import os
+from google import  genai
 from typing import List, Dict
 
-# ---------------------
-# Configure Gemini client
-# ---------------------
-def get_client():
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY not found in environment variables")
-    genai.configure(api_key=api_key)
-    return genai
 
 # ---------------------
 # Generate prompt for Gemini
@@ -59,7 +94,9 @@ def optimize(metadata: List[Dict]) -> str:
     """
     Sends static-analysis metadata to Gemini and returns optimization suggestions.
     """
-    client = get_client()
+    client = genai.Client(
+        api_key=os.environ["GEMINI_API_KEY"]
+    )
     prompt = generate_prompt(metadata)
 
     response = client.models.generate_content(
