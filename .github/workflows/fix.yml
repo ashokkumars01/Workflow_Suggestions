@@ -27,4 +27,4 @@ jobs:
 
       - name: Run Python script
         run: |
-          python scrip.py
+          python script.py

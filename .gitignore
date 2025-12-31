@@ -1,0 +1,8 @@
+venv/
+*.pyc
+.env
+.DS_Store
+.idea/
+.vscode/
+coverage.xml
+htmlcov/
