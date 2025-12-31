@@ -21,5 +21,7 @@ def extract_functions(source, file):
                 "file": file,
                 "line": node.lineno,
                 "fingerprint": fingerprint(node)
+                "lines": node.end_lineno - node.lineno + 1 if hasattr(node, "end_lineno") else 0,
+                "node": node
             })
     return results

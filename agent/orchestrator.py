@@ -171,8 +171,9 @@ def generate_suggestions(findings):
 def main():
     findings = []
     fingerprints = {}
-
-    for file in scan_repo():
+    files = ["test.py"]
+    # for file in scan_repo():
+    for file in files:
         print("DEBUG: Scanning file:", file)
         with open(file, encoding="utf-8") as f:
             src = f.read()
