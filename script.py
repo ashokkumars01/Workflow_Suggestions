@@ -78,7 +78,7 @@ def main() -> None:
     output_file = os.getenv("OUTPUT_FILE", "report.json")
 
     try:
-        data = load_dat(input_file)
+        data = load_data(input_file)
         report = process_data(data)
         save_report(report, output_file)
 
