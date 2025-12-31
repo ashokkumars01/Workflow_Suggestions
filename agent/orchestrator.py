@@ -1,10 +1,10 @@
 # agent/orchestrator.py
-from .file_scanner import scan_repo
-from .static_analysis import analyze_file
-from .redundancy_detector import extract_functions
-from .sanitizer import sanitize
-from .gemini_agent import optimize
-from .report import post_comment
+from agent.file_scanner import scan_repo
+from agent.static_analysis import analyze_file
+from agent.redundancy_detector import extract_functions
+from agent.sanitizer import sanitize
+from agent.gemini_agent import optimize
+from agent.report import post_comment
 
 def main():
     findings = []
