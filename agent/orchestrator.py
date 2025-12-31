@@ -197,7 +197,7 @@ def main():
     if not findings:
         print("DEBUG: No findings detected, injecting test finding...")
         findings.append({
-            "file": "test_file.py",
+            "file": "test.py",
             "issues": [{"type": "test_issue", "description": "This is a test PR comment"}]
         })
 
