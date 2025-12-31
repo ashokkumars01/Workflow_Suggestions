@@ -1,6 +1,6 @@
 # agent/gemini_agent.py
 import os
-from google import generativeai as genai
+from google import genai
 from typing import List, Dict
 
 # ---------------------
