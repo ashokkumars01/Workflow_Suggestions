@@ -33,7 +33,7 @@ Respond in MARKDOWN.
         contents=prompt,
         config={
             "temperature": 0.2,
-            "max_output_tokens": 700
+            "max_output_tokens": 1000000
         }
     )
 
